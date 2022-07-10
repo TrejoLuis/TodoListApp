@@ -2,12 +2,19 @@ const express = require('express');
 const app = express();
 const dotenv = require('dotenv').config();
 const errorHandler = require('./server/middlewares/errorHandler');
+const connectDB = require('./server/config/db');
 
 const PORT = process.env.PORT || 4000;
+
+connectDB(); //connecting to DB
+
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
 //################# routes ##############
 app.use('/login', require('./server/routes/auth'));
 app.use('/', require('./server/routes/root'));
+app.use('/api/tasks', require('./server/routes/api/task'));
 
 //to handle all no used paths
 // app.all("*", (req, res) => {
